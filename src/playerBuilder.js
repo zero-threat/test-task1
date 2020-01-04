@@ -41,14 +41,16 @@ class SoundPlayer {
     this.progressBar = elementCreater('div', `${this.classPrefix}-progress-bar`)
     this.timeLeftSpan = elementCreater('span', `${this.classPrefix}-time-left`)
     this.timeLeftSpan.innerHTML = '0:00'
-    this.speedViewer = this.createSpeedChanger() 
+    this.speedViewer = this.createSpeedChanger()
+    const volumeViewer = this.createVolumeChanger()
 
     const toolBarChildrens = [
       this.playButton,
       this.currentTimeSpan,
       progressWrapper,
       this.timeLeftSpan,
-      this.speedViewer
+      this.speedViewer,
+      volumeViewer
     ]
     toolBarChildrens.forEach(el => toolBar.appendChild(el))
   
@@ -64,6 +66,14 @@ class SoundPlayer {
     const speedViewer = elementCreater('button', `${this.classPrefix}-speed-changer`)
     speedViewer.innerHTML = this.speedList[0]
     return speedViewer;
+  }
+
+  createVolumeChanger = () => {
+    const volumeViewer = elementCreater('div', `${this.classPrefix}-volume-changer`)
+    const image = elementCreater('img')
+    image.src = 'https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/volume-24-512.png'
+    volumeViewer.appendChild(image)
+    return volumeViewer;
   }
 
   play = () => {
