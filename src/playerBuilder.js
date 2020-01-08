@@ -174,8 +174,8 @@ class SoundPlayer {
   }
 
   progressBarUpdate = (duration, position) => {
-    this.progressBarTime = duration / 10
-    const previousPosition = +position + this.progressBarTime
+    const progressBarTime = duration / 10
+    const previousPosition = +position + progressBarTime
     this.progressBarValue = `translate(calc(${+position + previousPosition}% + 5px), -50%)`
     // this.newPosition = this.positionUpdate 
     // console.log(this.progressBarTime)
