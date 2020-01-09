@@ -1,5 +1,6 @@
 import './styles/media-player.scss';
 
+// Вспомогательная функция для создания DOM-элементов
 const elementCreater = (tagName, className, src) => {
   const element = document.createElement(tagName);
   element.className = className
@@ -7,6 +8,7 @@ const elementCreater = (tagName, className, src) => {
   return element;
 };
 
+// Вспомогательная функция для присвоения нескольких атрибутов элементам
 const setAttributes = (el, attrs) => {
   for (const key in attrs) {
     el.setAttribute(key, attrs[key]);
@@ -14,6 +16,7 @@ const setAttributes = (el, attrs) => {
 }
 
 class SoundPlayer {
+  // Даем определить селектор для плеера
   constructor(rootElement = document.body) {
     this.speedList = {
       '0.5x': 0.5,
@@ -25,6 +28,8 @@ class SoundPlayer {
       '2.25x': 2.25
     }
     this.rootElement = rootElement;
+
+  // Создаем HTML5 Audio плеер и делаем его невидимым
     this.mediaElement = document.createElement('audio');
     this.mediaElement.volume = 1
     this.mediaElement.addEventListener('ended', () => this.onAudioEnded())
@@ -32,6 +37,8 @@ class SoundPlayer {
   }
 
   renderPlayer = () => {
+    // Создаем визуальную оболочку плеера
+    // Создаем фунцкионал плеера, основанный на HTML5 file API
     this.classPrefix = 'sound-player'
 
     const wrapper = elementCreater('div', `${this.classPrefix}-wrapper`);
@@ -76,6 +83,8 @@ class SoundPlayer {
   
   }
 
+  // Функции-создатели элементов:
+  // Кнопка "Воспроизвести"
   createPlayButton = () => {
     this.playButton = elementCreater('div', `${this.classPrefix}-play-button`)
     this.playButton.addEventListener('click', () => {
@@ -86,18 +95,21 @@ class SoundPlayer {
     return this.playButton
   }
 
+  // Кнопка "Остановить"
   createStopButton = () => {
     this.stopButton = elementCreater('div', `${this.classPrefix}-stop-button`)
     this.stopButton.addEventListener('click', () => this.stopAudio())
     return this.stopButton
   }
 
+  // Текущее время воспроизведения аудио
   createCurrentTimeSpan = () => {
     this.currentTimeSpan = elementCreater('span', `${this.classPrefix}-current-time`)
     this.currentTimeSpan.innerHTML = '0:00'
     return this.currentTimeSpan
   }
 
+  // Индикатор прогресса воспроизведения аудио
   createProgressBar = () => {
     const progressWrapper = elementCreater('div', `${this.classPrefix}-progress-wrapper`);
     const progressLine = elementCreater('div', `${this.classPrefix}-progress-line`)
@@ -121,6 +133,7 @@ class SoundPlayer {
     return progressWrapper
   }
 
+  // Оставшееся время воспроизведения аудио
   createTimeLeftSpan = () => {
     this.timeLeftSpan = elementCreater('span', `${this.classPrefix}-time-left`)
     this.timeLeftSpan.innerHTML = '0:00'
@@ -130,6 +143,7 @@ class SoundPlayer {
     return this.timeLeftSpan
   }
 
+  // Кнопка изменения скорости
   createSpeedChanger = () => {
     const speedViewer = elementCreater('button', `${this.classPrefix}-speed-changer`);
     const currentSpeed = elementCreater('span')
@@ -149,6 +163,7 @@ class SoundPlayer {
     return speedViewer;
   }
 
+  // Кнопка изменения/заглушения звука
   createVolumeChanger = () => {
     const volumeViewer = elementCreater('div', `${this.classPrefix}-volume-changer`);
     const volumeSlider = elementCreater('input', `${this.classPrefix}-volume-slider`);
@@ -172,6 +187,7 @@ class SoundPlayer {
     return volumeViewer;
   }
 
+  // Кнопка загрузки трека на компьютер (функционал реализован)
   createDownloadButton = () => {
     this.downloadWrapper = elementCreater('a')
     const downloadButton = elementCreater('button', `${this.classPrefix}-download-button`)
@@ -182,6 +198,7 @@ class SoundPlayer {
     return this.downloadWrapper;
   }
 
+  // Кнопка загрузки трека в плеер
   createUploadButton = () => {
     const uploadWrapper = elementCreater('div', `${this.classPrefix}-upload-wrapper`)
     this.uploadInput = elementCreater('input')
@@ -196,6 +213,7 @@ class SoundPlayer {
     return uploadWrapper
   }
 
+  // Функция запуска аудио
   playAudio = () => {
     this.playButton.style.display = 'none'
     this.stopButton.style.display = 'block'
@@ -203,12 +221,14 @@ class SoundPlayer {
     this.mediaElement.play()
   }
 
+  // Функция остановки аудио
   stopAudio = () => {
     this.mediaElement.pause();
     this.playButton.style.display = 'block'
     this.stopButton.style.display = 'none'
   }
 
+  // Функция сброса данных после завершения воспроизведения аудио
   onAudioEnded = () => {
     this.currentTimeSpan.innerHTML = '0:00'
     this.timeLeftSpan.innerHTML = '0:00'
@@ -219,6 +239,7 @@ class SoundPlayer {
     this.mediaElement.removeEventListener('timeupdate', this.playerUpdate)
   }
 
+  // Обновление нужных данных во время воспроизведения аудио
   playerUpdate = () => {
     const trackTimePercents = (this.mediaElement.currentTime / (this.mediaElement.duration / 100)) 
     const progressBarPosition = (
@@ -228,18 +249,21 @@ class SoundPlayer {
     this.updateTimeSpans()
   }
 
+  // Получение общей продолжительности аудио и преобразование в нужную нам форму
   getAudioDuration = (duration) => {
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration) - (minutes * 60)
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   }
 
+  // Обновление текущего и оставшегося времени воспроизведения
   updateTimeSpans = () => {
     this.timeLeftSpan.innerHTML = this.getAudioDuration(this.mediaElement.duration)
     this.currentTimeSpan.innerHTML = this.getAudioDuration(this.mediaElement.currentTime)
     this.timeLeftSpan.innerHTML = this.getAudioDuration((this.mediaElement.duration - this.mediaElement.currentTime))
   }
 
+  // Обновление индикатора прогресса воспроизведения аудио
   progressBarUpdate = (position) => {
     this.progressBar.style.left = position + 'px'
   }
@@ -257,7 +281,8 @@ class SoundPlayer {
   }
 }
 
-
+// Экспортируем функцию, реализующую плеер в index.js
+// Присваиваем родителю плеера селектор
 export default function playerBuilder(rootSelector) {
   const rootElement = document.querySelector(rootSelector);
   return new SoundPlayer(rootElement);
