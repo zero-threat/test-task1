@@ -1,3 +1,7 @@
+.player-wrapper {
+  margin: 200px;
+}
+
 .sound-player {
   
   &-wrapper {
@@ -21,11 +25,18 @@
   &-title {
     font-size: 18px;
     font-weight: 600;
+    font-family: "Yanone Kaffeesatz";
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding-left: 60px;
+    padding-left: 45px;
+    color: #404040;
+
+    &::first-letter {
+      color: #08f;
+      text-transform: uppercase;
+    }
   }
 
   &-toolbar {
@@ -33,6 +44,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #0088ff;
   }
 
   &-play-button {
@@ -40,7 +52,7 @@
     height: 0;
     border-style: solid;
     border-width: 10px 0 10px 20px;
-    border-color: transparent transparent transparent #000000;
+    border-color: transparent transparent transparent #404040;
     display: block;
     margin: 0;
     cursor: pointer;
@@ -49,10 +61,10 @@
   &-stop-button {
     display: none;
     cursor: pointer;
-    img {
-      width: 23px;
-      height: 23px;
-    }
+    width: 5px;
+    height: 15px;
+    border-right: 5px solid #404040;
+    border-left: 5px solid #404040;
   }
 
   &-progress-wrapper {
@@ -68,7 +80,7 @@
   &-progress-line {
     width: 100%;
     height: 5px;
-    background-color: #cccaca;
+    background-color: #404040;
     cursor: pointer;
   }
 
@@ -76,13 +88,13 @@
     position: absolute;
     height: 5px;
     width: 100%;
-    background-color: black;
     z-index: 1;
     top: 50%;
     left: 0;
     transform: translate(calc(-100% + 5px), -50%);
     pointer-events: none;
     cursor: pointer;
+    background-color: #0088ff;
     
     &::before {
       content: "";
@@ -90,7 +102,7 @@
       width: 10px;
       height: 10px;
       border-radius: 100%;
-      background-color: black;
+      background-color: #0088ff;
       right: -5px;
       top: 50%;
       transform: translateY(-55%);
@@ -103,8 +115,15 @@
     align-items: center;
     font-size: 15px;
     position: relative;
+    color: #404040;
+
+    button {
+      color: #0088ff;
+    }
 
     &:hover {
+      color: #404040;
+
       .sound-player-speed-changer-menu {
         display: flex;
       }
@@ -120,6 +139,21 @@
       left: 50%;
       transform: translate(-50%, -100%);
       background-color: #ffffff;
+      border: 1px solid #404040;
+      border-radius: 10px;
+
+      button {
+        border-bottom: 1px solid #404040;
+        width: 100%;
+        
+        &:last-child {
+          border: none;
+        }
+
+        &:hover {
+          color: #404040;
+        }
+      }
     }
   }
 
@@ -128,18 +162,44 @@
     cursor: pointer;
     position: relative;
 
+    input {
+      -webkit-appearance: none;
+      width: 100%;
+      
+      &:focus {
+        outline: none;
+      }
+
+      &::-webkit-slider-runnable-track {
+        height: 50%;
+        cursor: pointer;
+        background: #08f;
+        border-radius: 25px;
+      }
+
+      &::-webkit-slider-thumb {
+        height: 13px;
+        width: 12px;
+        border-radius: 12px;
+        background: #404040;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -5px;
+      }
+    }
+
     &:hover {
-      .sound-player-progress-wrapper {
-        display: flex;
+      .sound-player-volume-slider {
+        display: block;
       }  
     }
 
-    .sound-player-progress-wrapper {
+    .sound-player-volume-slider {
+      background-color: transparent;
       display: none;
-      background-color: white;
       position: absolute;
       width: 50px;
-      transform: rotate(-90deg) translate(60%, 50%);
+      transform: rotate(-90deg) translate(65%, 55%);
       top: 0;
       left: -25px;
     }
