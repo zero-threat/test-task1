@@ -282,7 +282,7 @@ class SoundPlayer {
 }
 
 // Экспортируем функцию, реализующую плеер в index.js
-// Присваиваем родителю плеера селектор
+// Там с помощью нее присваиваем родителю плеера селектор
 export default function playerBuilder(rootSelector) {
   const rootElement = document.querySelector(rootSelector);
   return new SoundPlayer(rootElement);
